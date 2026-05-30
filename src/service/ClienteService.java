@@ -21,7 +21,7 @@ public class ClienteService {
         if (cliente.getLogin() == null || cliente.getLogin().trim().isEmpty()) {
             throw new IllegalArgumentException("O login do cliente é obrigatório.");
         }
-        
+
         // Validação de duplicidade de Login
         if (repository.buscarPorLogin(cliente.getLogin()).isPresent()) {
             throw new IllegalArgumentException("Este login já existe. Por favor, tente outro.");

@@ -9,7 +9,7 @@ import java.util.Scanner;
 
 public class Main {
     private static Scanner scanner = new Scanner(System.in);
-    
+
     private static MedicamentoRepository medicamentoRepository = new MedicamentoRepository();
     private static ClienteRepository clienteRepository = new ClienteRepository();
     private static VendaRepository vendaRepository = new VendaRepository();
@@ -64,7 +64,7 @@ public class Main {
                 String novoLogin = scanner.nextLine();
                 System.out.print("Escolha sua Senha: ");
                 String novaSenha = scanner.nextLine();
-                
+
                 // Usamos o login como nome também para o cadastro simplificado
                 clienteController.adicionarCliente(novoLogin, "", "", "", novoLogin, novaSenha);
             } else if (loginOp == 0) {
@@ -87,7 +87,7 @@ public class Main {
             System.out.println("5 - Frente de Vendas (PDV)");
             System.out.println("0 - Logout");
             System.out.print("Escolha uma opção: ");
-            
+
             opcao = lerInteiro();
 
             switch (opcao) {
@@ -151,7 +151,7 @@ public class Main {
 
                 medicamentoController.adicionarMedicamento(nome, lab, preco, qtd, validade);
             } else if (op == 2) {
-                medicamentoController.exibirEstoque(); 
+                medicamentoController.exibirEstoque();
             }
         }
     }
@@ -294,7 +294,7 @@ public class Main {
 
     private static void carregarDadosIniciais() {
         funcionarioController.adicionarFuncionario("Administrador Geral", "000.000.000-00", "Gerente", "admin", "admin123", "ADMINISTRADOR");
-        
+
         medicamentoRepository.salvar(new Medicamento(null, "Paracetamol", "Medley", 12.50, 50, "12/2027"));
         medicamentoRepository.salvar(new Medicamento(null, "Amoxicilina", "EMS", 45.00, 20, "08/2026"));
         medicamentoRepository.salvar(new Medicamento(null, "Ibuprofeno", "Eurofarma", 18.20, 35, "05/2027"));
