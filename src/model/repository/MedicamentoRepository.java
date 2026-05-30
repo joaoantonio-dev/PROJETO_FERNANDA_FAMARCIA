@@ -18,10 +18,10 @@ public class MedicamentoRepository {
         }
     }
 
-    private void atualizar(Medicamento medicamentoAtualizado) {
+    private void atualizar(Medicamento medAtualizado) {
         for (int i = 0; i < medicamentos.size(); i++) {
-            if (medicamentos.get(i).getId().equals(medicamentoAtualizado.getId())) {
-                medicamentos.set(i, medicamentoAtualizado);
+            if (medicamentos.get(i).getId().equals(medAtualizado.getId())) {
+                medicamentos.set(i, medAtualizado);
                 return;
             }
         }
