@@ -1,16 +1,33 @@
 package model;
 
 public class Cliente {
-
-    private int id;
+    private Integer id; // Alterado para Integer para aceitar null
     private String nome;
     private String cpf;
     private String telefone;
+    private String email; // Adicionado para bater com o seu ClienteController
 
-    public Cliente(int id, String nome, String cpf, String telefone) {
+    public Cliente(Integer id, String nome, String cpf, String telefone, String email) {
         this.id = id;
         this.nome = nome;
         this.cpf = cpf;
         this.telefone = telefone;
+        this.email = email;
     }
+
+    // Getters e Setters adicionados
+    public Integer getId() { return id; }
+    public void setId(Integer id) { this.id = id; }
+
+    public String getNome() { return nome; }
+    public void setNome(String nome) { this.nome = nome; }
+
+    public String getCpf() { return cpf; }
+    public void setCpf(String cpf) { this.cpf = cpf; }
+
+    public String getTelefone() { return telefone; }
+    public void setTelefone(String telefone) { this.telefone = telefone; }
+
+    public String getEmail() { return email; }
+    public void setEmail(String email) { this.email = email; }
 }
