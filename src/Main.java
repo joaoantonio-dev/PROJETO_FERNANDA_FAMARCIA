@@ -9,7 +9,7 @@ import java.util.Scanner;
 
 public class Main {
     private static Scanner scanner = new Scanner(System.in);
-    
+
     private static MedicamentoRepository medicamentoRepository = new MedicamentoRepository();
     private static ClienteRepository clienteRepository = new ClienteRepository();
     private static VendaRepository vendaRepository = new VendaRepository();
@@ -27,21 +27,51 @@ public class Main {
         System.out.println("    BEM-VINDO AO JL SMART PHARMA        ");
         System.out.println("========================================");
 
-        boolean logado = false;
-        while (!logado) {
-            System.out.println("\n--- TELA DE LOGIN ---");
-            System.out.print("Login: ");
-            String login = scanner.nextLine();
-            System.out.print("Senha: ");
-            String senha = scanner.nextLine();
+        boolean sair = false;
+        while (!sair) {
+            System.out.println("\n--- TELA INICIAL ---");
+            System.out.println("1 - Login Funcionário (Admin)");
+            System.out.println("2 - Login Cliente");
+            System.out.println("3 - Criar Conta (Cliente)");
+            System.out.println("0 - Sair");
+            System.out.print("Opção: ");
+            int loginOp = lerInteiro();
 
-            logado = funcionarioController.realizarLogin(login, senha);
-            if (!logado) {
-                System.out.println("Tente novamente. (Dica: use admin / admin123)");
+            if (loginOp == 1) {
+                System.out.print("Login: ");
+                String login = scanner.nextLine();
+                System.out.print("Senha: ");
+                String senha = scanner.nextLine();
+                if (funcionarioController.realizarLogin(login, senha)) {
+                    menuPrincipal();
+                } else {
+                    System.out.println("Login inválido!");
+                }
+            } else if (loginOp == 2) {
+                System.out.print("Login: ");
+                String login = scanner.nextLine();
+                System.out.print("Senha: ");
+                String senha = scanner.nextLine();
+                Cliente clienteLogado = clienteController.realizarLogin(login, senha);
+                if (clienteLogado != null) {
+                    menuCliente(clienteLogado);
+                } else {
+                    System.out.println("Login inválido!");
+                }
+            } else if (loginOp == 3) {
+                System.out.println("\n--- CRIAR NOVA CONTA ---");
+                System.out.print("Escolha seu Login (Nome de usuário): ");
+                String novoLogin = scanner.nextLine();
+                System.out.print("Escolha sua Senha: ");
+                String novaSenha = scanner.nextLine();
+
+                // Usamos o login como nome também para o cadastro simplificado
+                clienteController.adicionarCliente(novoLogin, "", "", "", novoLogin, novaSenha);
+            } else if (loginOp == 0) {
+                sair = true;
+                System.out.println("Até logo!");
             }
         }
-
-        menuPrincipal();
     }
 
     private static void menuPrincipal() {
@@ -55,9 +85,9 @@ public class Main {
             System.out.println("3 - Gerenciar Fornecedores");
             System.out.println("4 - Gerenciar Funcionários");
             System.out.println("5 - Frente de Vendas (PDV)");
-            System.out.println("0 - Sair do Sistema");
+            System.out.println("0 - Logout");
             System.out.print("Escolha uma opção: ");
-            
+
             opcao = lerInteiro();
 
             switch (opcao) {
@@ -66,10 +96,35 @@ public class Main {
                 case 3: submenuFornecedores(); break;
                 case 4: submenuFuncionarios(); break;
                 case 5: submenuVendas(); break;
-                case 0: System.out.println("\nFechando o sistema... Até logo!"); break;
+                case 0: break;
                 default: System.out.println("Opção inválida!");
             }
         } while (opcao != 0);
+    }
+
+    private static void menuCliente(Cliente cliente) {
+        int op = -1;
+        while (op != 0) {
+            System.out.println("\n========================================");
+            System.out.println("      ÁREA DO CLIENTE: " + cliente.getNome());
+            System.out.println("========================================");
+            System.out.println("1 - Ver Medicamentos Disponíveis");
+            System.out.println("2 - Comprar Medicamento");
+            System.out.println("0 - Logout");
+            System.out.print("Opção: ");
+            op = lerInteiro();
+
+            if (op == 1) {
+                medicamentoController.exibirEstoque();
+            } else if (op == 2) {
+                System.out.print("Digite o nome do medicamento: ");
+                String nomeMed = scanner.nextLine();
+                System.out.print("Quantidade desejada: ");
+                int qtd = lerInteiro();
+                String data = "10/10/2026";
+                vendaController.realizarVenda(data, cliente.getNome(), nomeMed, qtd);
+            }
+        }
     }
 
     private static void submenuMedicamentos() {
@@ -96,7 +151,7 @@ public class Main {
 
                 medicamentoController.adicionarMedicamento(nome, lab, preco, qtd, validade);
             } else if (op == 2) {
-                medicamentoController.exibirEstoque(); // Método corrigido aqui!
+                medicamentoController.exibirEstoque();
             }
         }
     }
@@ -120,8 +175,12 @@ public class Main {
                 String tel = scanner.nextLine();
                 System.out.print("E-mail: ");
                 String email = scanner.nextLine();
+                System.out.print("Login: ");
+                String log = scanner.nextLine();
+                System.out.print("Senha: ");
+                String sen = scanner.nextLine();
 
-                clienteController.adicionarCliente(nome, cpf, tel, email);
+                clienteController.adicionarCliente(nome, cpf, tel, email, log, sen);
             } else if (op == 2) {
                 clienteController.exibirClientes();
             }
@@ -235,11 +294,11 @@ public class Main {
 
     private static void carregarDadosIniciais() {
         funcionarioController.adicionarFuncionario("Administrador Geral", "000.000.000-00", "Gerente", "admin", "admin123", "ADMINISTRADOR");
-        
+
         medicamentoRepository.salvar(new Medicamento(null, "Paracetamol", "Medley", 12.50, 50, "12/2027"));
         medicamentoRepository.salvar(new Medicamento(null, "Amoxicilina", "EMS", 45.00, 20, "08/2026"));
         medicamentoRepository.salvar(new Medicamento(null, "Ibuprofeno", "Eurofarma", 18.20, 35, "05/2027"));
 
-        clienteRepository.salvar(new Cliente(null, "João Antônio", "111.222.333-44", "83 99999-9999", "joao@email.com"));
+        clienteRepository.salvar(new Cliente(null, "João Antônio", "111.222.333-44", "83 99999-9999", "joao@email.com", "joao", "123"));
     }
 }

@@ -39,6 +39,10 @@ public class ClienteRepository {
         return clientes.stream().filter(c -> c.getCpf().equals(cpf)).findFirst();
     }
 
+    public Optional<Cliente> buscarPorLogin(String login) {
+        return clientes.stream().filter(c -> c.getLogin() != null && c.getLogin().equals(login)).findFirst();
+    }
+
     public void deletar(Integer id) {
         clientes.removeIf(c -> c.getId().equals(id));
     }

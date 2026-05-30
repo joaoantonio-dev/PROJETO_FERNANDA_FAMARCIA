@@ -6,13 +6,17 @@ public class Cliente {
     private String cpf;
     private String telefone;
     private String email;
+    private String login;
+    private String senha;
 
-    public Cliente(Integer id, String nome, String cpf, String telefone, String email) {
+    public Cliente(Integer id, String nome, String cpf, String telefone, String email, String login, String senha) {
         this.id = id;
         this.nome = nome;
         this.cpf = cpf;
         this.telefone = telefone;
         this.email = email;
+        this.login = login;
+        this.senha = senha;
     }
 
     // Getters e Setters
@@ -26,4 +30,8 @@ public class Cliente {
     public void setTelefone(String telefone) { this.telefone = telefone; }
     public String getEmail() { return email; }
     public void setEmail(String email) { this.email = email; }
+    public String getLogin() { return login; }
+    public void setLogin(String login) { this.login = login; }
+    public String getSenha() { return senha; }
+    public void setSenha(String senha) { this.senha = senha; }
 }
